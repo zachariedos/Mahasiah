@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			{% block title %}Mahasaiah Boutique
+			{% endblock %}
+		</title>
+		<meta charset="utf-8">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		{# Font Awesome #}
+		<link
+		rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"/>
+		{# Google Fonts  #}
+		<link
+		rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"/>
+		{# Bootstrap core CSS  #}
+		<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"/>
+		{# Material Design Bootstrap  #}
+		<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"/>
+
+		{# Bootstrap selecteurs #}
+		<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" rel="stylesheet"/>
+
+		{# Stripe #}
+		<link
+		rel="stylesheet" href="{{ asset('css/stripe.css') }}"/>
+
+		{# style css #}
+		<link
+		rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+
+		{# feuilles de styles #}
+		{% block stylesheets %}{% endblock %}
+	</head>
+	<body>
+		<header>
+			{# notifications #}
+			{% for message in app.flashes('notice') %}
+				<div class="flash-notice">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			<!--Navbar -->
+			<nav
+				class="mb-1 navbar navbar-expand-lg navbar-light lighten-1">
+				{# si l'utilisateur est connecté on affiche son profil et son panier #}
+				{% if app.user %}
+					<ul class="navbar-nav ml-auto cart-preview-ul nav-flex-icons">
+						<li id="cart-preview" class="nav-item dropdown">
+							<div class="d-block d-lg-none">
+								<a class="nav-link" href="{{ path('cart_show')}}">
+									{% if app.user.cart %}
+										{{ app.user.cart.cartProducts|length }}
+									{% endif %}
+									<i class="fas fa-shopping-cart"></i>
+								</a>
+							</div>
+							<div class="d-none d-lg-block">
+								<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-cart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{% if app.user.cart %}
+										{{ app.user.cart.cartProducts|length }}
+									{% endif %}
+									<i class="fas fa-shopping-cart"></i>
+								</a>
+								<div id="displayarticleofcart" class="dropdown-menu dropdown-menu-lg-right dropdown-secondary text-center pb-0" aria-labelledby="navbarDropdownMenuLink-cart">
+									{% if app.user.cart %}
+										{% set totalPrice = 0 %}
+										{% for products in app.user.cart.cartProducts %}
+											{% set totalPrice = (products.quantity * products.product.Price) %}
+											<div class="dropdown-item p-0" id="productincart-{{ products.id }}">
+												<div class="row container-fluid mx-auto m-0 p-0">
+													<a class="col-10 container-fluid" href="{{ path('products_show', {'id': products.product.id}) }}">
+														{% for key,image in products.product.productImages %}
+															{% if key == 0 %}
+																<div class="col-4 p-0">
+																	<img width="100%" class="text-left" src="{{ asset('images/products/'~image.imageName) }}">
+																</div>
+															{% endif %}
+														{% endfor %}
+														<div class="col-8 text-left align-bottom">
+															<b>{{products.product.Title}}</b>
+															<br>
+															<small>{{products.quantity}}
+																x
+																{{products.product.Price}}€</small>
+														</div>
+													</a>
+													<div class="col-2 text-center mx-auto">
+														<i onclick="removefromcart({{ products.id }})" class="far fa-trash-alt text-danger"></i>
+													</div>
+												</div>
+											</div>
+										{% endfor %}
+										{% if app.user.cart.cartProducts is not empty %}
+											<div class="m-0 w-100 text-black">
+												<a class="btn btn-light w-100 m-0 OrderNowButton" href="{{ path('cart_show')}}">
+													Passer la commande
+												</a>
+											</div>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{app.user.firstname}}<i class="fas fa-user"></i>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary text-center pb-0" aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="{{ path('profil_order')}}">Vos commandes</a>
+								<a class="dropdown-item" href="{{ path('profil_edit')}}">Modifier votre profil</a>
+								<a class="dropdown-item" href="{{ path('app_logout')}}">Déconnexion</a>
+							</div>
+						</li>
+
+					{% else %}
+						<div class="ml-auto mr-0 text-decoration-none loginsinglebutton">
+							<li class="nav-link">
+								<a href="{{ path('app_login')}}">Connexion
+									<i class="fas fa-user"></i>
+								</a>
+							</li>
+						</div>
+					{% endif %}
+				</ul>
+			</nav>
+			<!--/.Navbar -->
+		</header>
+		<main>
+			{% block body %}{% endblock %}
+		</main>
+		<!-- Footer -->
+		<footer
+			id="footer" class=" page-footer font-small stylish-color-dark">
+
+			<!-- Footer Links -->
+			<div
+				class="container text-center text-md-left">
+
+				<!-- Grid row -->
+				<div class="row">
+
+					<hr
+					class="clearfix w-100 d-md-none">
+
+					<!-- Grid column -->
+					<div
+						class="col-md-2 mx-auto">
+
+						<!-- Links -->
+						<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Compte</h5>
+
+						<ul class="list-unstyled">
+							{% if app.user %}
+								<li>
+									<a href="{{ path('profil_edit') }}">Modifier votre compte</a>
+								</li>
+								<li>
+									<a href="{{ path('app_logout') }}">Déconnexion</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{ path('app_login') }}">Connexion</a>
+								</li>
+								<li>
+									<a href="{{ path('app_register') }}">Inscription</a>
+								</li>
+							{% endif %}
+						</ul>
+
+					</div>
+					<!-- Grid column -->
+					{% if app.user %}
+						<hr
+						class="clearfix w-100 d-md-none">
+
+						<!-- Grid column -->
+
+
+						<div
+							class="col-md-2 mx-auto">
+
+							<!-- Links -->
+							<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Achats</h5>
+
+							<ul class="list-unstyled">
+								<li>
+									<a href="{{ path('cart_show') }}">Votre Panier</a>
+								</li>
+								<li>
+									<a href="{{ path('profil_order') }}">Commandes passées</a>
+								</li>
+							</ul>
+
+						</div>
+					{% endif %}
+					<!-- Grid column -->
+
+					<hr
+					class="clearfix w-100 d-md-none">
+
+					<!-- Grid column -->
+					<div
+						class="col-md-2 mx-auto">
+
+						<!-- Links -->
+						<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Autres</h5>
+
+						<ul class="list-unstyled">
+							<li>
+								<a href="{{ path('index') }}">Accueil</a>
+							</li>
+						</ul>
+
+					</div>
+					<!-- Grid column -->
+					<!-- Grid column -->
+					{% if is_granted('ROLE_ADMIN') %}
+						<hr
+						class="clearfix w-100 d-md-none">
+
+						<!-- Grid column -->
+						<div
+							class="col-md-2 mx-auto">
+
+							<!-- Links -->
+							<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Administration</h5>
+
+							<ul class="list-unstyled">
+								<li>
+									<a href="{{ path('admin') }}">Panneau d'Administration</a>
+								</li>
+							</ul>
+
+						</div>
+						<!-- Grid column -->
+					{% endif %}
+
+				</div>
+				<!-- Grid row -->
+
+			</div>
+			<!-- Footer Links -->
+
+			<hr>
+
+			<!-- Social buttons -->
+			<ul class="list-unstyled list-inline text-center">
+				<li class="list-inline-item">
+					<a class="btn-floating btn-fb mx-1" target="_blank" href="https://www.facebook.com/Mahasiah-287555318012548/">
+						<i class="fab fa-facebook-f"></i>
+					</a>
+				</li>
+				<li class="list-inline-item">
+					<a class="btn-floating btn-gplus mx-1" target="_blank" href="https://goo.gl/maps/iCS9ZkyVdK7iDHmn7">
+						<i class="fas fa-map-marked-alt"></i>
+					</a>
+				</li>
+				<li class="list-inline-item">
+					<a class="btn-floating btn-li mx-1" target="_blank" href="tel:+330380500769">
+						<i class="fas fa-phone"></i>
+					</a>
+				</li>
+			</ul>
+			<!-- Social buttons -->
+
+			<!-- Infos -->
+			<div class="footer-copyright text-center py-3">
+				<a target="_blank" href="https://goo.gl/maps/iCS9ZkyVdK7iDHmn7">
+					<p>Mahasaiah, 24 Rue de la Chouette, 21000 Dijon
+						<a target="_blank" href="tel:+330380500769">03 80 50 07 69</a>
+					</p>
+				</div>
+				<!-- Infos -->
+
+			</footer>
+			<!-- Footer -->
+			<!-- JQuery -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<!-- Bootstrap tooltips -->
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script><!-- Bootstrap core JavaScript --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script><!-- MDB core JavaScript --><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+			{# script global #}
+			<script src="{{ asset('js/script.js') }}"></script>
+
+			{# Selecteurs bootstrap #}
+			<script src="{{ asset('js/bootstrap-select-1.13.14/js/bootstrap-select.js') }}"></script>
+			{% block javascripts %}{% endblock %}
+		</body>
+	</body>
+</html></body></html>

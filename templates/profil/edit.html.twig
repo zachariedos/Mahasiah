@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification de profil
+{% endblock %}
+{% block body %}
+
+	<h1 class="text-center text-white">Modification de profil</h1>
+	<div class="container card py-5 mt-3">
+		{% if app.user.orders is not empty %}
+			<div class="alert-danger">
+				<p class="text-center">Vous ne pouvez pas supprimer votre compte car vous avez des commandes en cours
+					<a href="{{ path('profil_order') }}">Voir vos commandes</a>
+				</p>
+			</div>
+		{% endif %}
+
+		{{ include('profil/_form.html.twig', {'button_label': 'Modifier'}) }}
+		{% if not app.user.orders is not empty %}
+			{{ include('profil/_delete_form.html.twig') }}
+		{% endif %}
+	</div>
+{% endblock %}

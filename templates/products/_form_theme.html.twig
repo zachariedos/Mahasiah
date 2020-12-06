@@ -1,0 +1,14 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block _products_product_images_widget %}
+
+
+	<ul class="row" id="product-images-fields-list" data-prototype="{{ form_widget(prototype)|e }}" data-widget-tags="{{ '<div class="col-4 "></div>'|e }}" data-widget-counter="{{ value|length }}">
+		{% for key,productImageForm in form.children %}
+			<div class="col-4 ">
+				{{ form_widget(productImageForm) }}
+			</div>
+		{% endfor %}
+	</ul>
+
+	<button type="button" class="add-another-collection-widget btn  btn-light" data-list-selector="#product-images-fields-list">Ajouter une image du produit</button>
+{% endblock %}

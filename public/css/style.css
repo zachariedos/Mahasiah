@@ -1,0 +1,231 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(114, 55, 12, 0.73),
+      rgba(114, 55, 12, 0.73)
+    ),
+    url("../images/webpages/bgtest.jpg"), url("../images/webpages/bgtest.jpg") !important;
+  background-size: cover !important;
+}
+
+/* navbar */
+nav {
+  background-color: rgb(131, 75, 35) !important;
+  color: black !important;
+}
+
+/* panier */
+
+.cartProductQuantityPrice {
+  position: absolute;
+  bottom: 0;
+}
+div#displayarticleofcart {
+  width: 250px !important;
+}
+#displayarticleofcart {
+  background-image: url("../images/webpages/bgcard.jpg");
+  color: white !important;
+  background-size: 100% 80%;
+}
+#displayarticleofcart .col-8.text-left.align-bottom {
+  color: white !important;
+  font-size: large;
+}
+#displayarticleofcart .btn {
+  font-size: large;
+  color: black !important;
+}
+#displayarticleofcart .dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: rgba(114, 55, 12, 0.7) !important;
+}
+
+/* formumlaire */
+.form-control div.input {
+  background-color: rgb(131, 75, 35) !important;
+}
+
+.form-control {
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: black !important;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+.md-form .form-control {
+  background: transparent !important;
+  color: white !important;
+}
+label {
+  background: transparent !important;
+  color: white !important;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  overflow: hidden !important;
+}
+.form-control::placeholder {
+  color: whitesmoke;
+}
+[type="search"] {
+  color: black !important;
+}
+
+/* card bootstrap */
+.card {
+  background-image: url("../images/webpages/bgcard.jpg");
+  color: white !important;
+  background-size: 100% 80%;
+}
+.cardiinorder {
+  background-image: none;
+  color: black !important;
+  background-size: 100% 80%;
+}
+.btn-brown {
+  background-color: rgb(131, 75, 35) !important;
+}
+
+/* Images */
+.vich-image {
+  overflow: hidden !important;
+}
+.vich-image img {
+  margin-top: 5px;
+  width: 100%;
+  max-height: 100%;
+}
+
+/* page de paiment */
+@media screen and (min-width: 769px) {
+  .paiementsidebar {
+    position: fixed !important;
+    right: 0 !important;
+  }
+}
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+    .number-input.def-number-input.safari_only button:before,
+    .number-input.def-number-input.safari_only button:after {
+      margin-top: -0.3rem;
+    }
+  }
+}
+
+/* Multi Selection */
+.filter-option-inner-inner {
+  text-transform: none !important;
+}
+.number-input input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.number-input input[type="number"]::-webkit-inner-spin-button,
+.number-input input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.number-input {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.number-input button {
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+}
+
+.number-input button:before,
+.number-input button:after {
+  display: inline-block;
+  position: absolute;
+  content: "";
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.number-input button.plus:after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.number-input input[type="number"] {
+  text-align: center;
+}
+
+.number-input.number-input {
+  border: 1px solid #ced4da;
+  width: 10rem;
+  border-radius: 0.25rem;
+}
+
+.number-input.number-input button {
+  width: 2.6rem;
+  height: 0.7rem;
+}
+
+.number-input.number-input button.minus {
+  padding-left: 10px;
+}
+
+.number-input.number-input button:before,
+.number-input.number-input button:after {
+  width: 0.7rem;
+  background-color: #495057;
+}
+
+.number-input.number-input input[type="number"] {
+  max-width: 4rem;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-width: 0 1px;
+  font-size: 1rem;
+  height: 2rem;
+  color: #495057;
+}
+/* divers utilitaires */
+.text-white {
+  color: white !important;
+}
+.text-black {
+  color: black !important;
+}
+.btn-light {
+  color: black !important;
+}
+li {
+  list-style: none !important;
+}
+
+.col-form-label {
+  color: white;
+}
+
+.imgoutofstock {
+  background-image: url("../images/webpages/outofstock.png");
+}
+
+.loginsinglebutton li.nav-link a {
+  color: white !important;
+}
+
+.bootstrap-select {
+  background: transparent !important;
+}
+
+.invalid-feedback {
+  background-color: #00000073 !important;
+  padding: 5px !important;
+  border-radius: 5px !important;
+}

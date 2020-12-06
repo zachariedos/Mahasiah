@@ -1,0 +1,46 @@
+{% form_theme form 'products/_form_theme.html.twig' %}
+
+{{ form_start(form) }}
+<div class="row container mx-auto">
+	<div class="col-8">
+		{{ form_label(form.Title)}}
+		{{ form_widget(form.Title)}}
+	</div>
+
+	<div class="col-4">
+		{{ form_label(form.Price)}}
+		{{ form_widget(form.Price)}}
+	</div>
+
+	<div class="col-6">
+		{{ form_label(form.Quantity)}}
+		{{ form_widget(form.Quantity)}}
+	</div>
+
+	<div class="col-6">
+		{{ form_label(form.Size)}}
+		{{ form_widget(form.Size)}}
+	</div>
+
+	<div class="col-7 my-3">
+		{{ form_label(form.Materials)}}
+		{{ form_widget(form.Materials)}}
+	</div>
+
+	<div class="col-5 mt-1">
+		{{ form_label(form.Categories)}}
+		{{ form_widget(form.Categories)}}
+	</div>
+	<div class="col-12">
+		{{ form_label(form.Description)}}
+		{{ form_widget(form.Description)}}
+	</div>
+
+	<div class="col-12">
+		{{ form_label(form.product_images)}}
+		{{ form_widget(form.product_images)}}
+	</div>
+
+	<button class="btn btn-light">{{ button_label|default('Ajouter') }}</button>
+</div>
+{{ form_end(form) }}

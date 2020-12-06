@@ -1,0 +1,172 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products index
+{% endblock %}
+
+{% block body %}
+	<h1 class="hidden">Produits</h1>
+	{{ form_start(form) }}
+	<div class="row container-fluid justify-content-center md-form">
+		<div class="col-2">{{ form_row(form.SearchPrixMin, {'label': " ",'type':'number', 'attr': {'placeholder': 'Prix Minimum'}}) }}</div>
+		<div class="col-2">{{ form_row(form.SearchPrixMax, {'label': " ",'type':'number', 'attr': {'placeholder': 'Prix Maximum'}}) }}</div>
+		<div class="col-3">{{ form_row(form.SearchGlobal, {'label': " ", 'attr': {'placeholder': 'Rechercher un produit'}}) }}</div>
+		<button class="btn btn-brown col-3">Rechercher</button>
+	</div>
+	{{ form_end(form) }}
+	{% for categorie in categories %}
+
+		{% set showcat = false %}
+
+		{% for product in categorie.products %}
+			{% if product.quantity > 0  %}
+				{% set showcat = true %}
+			{% endif %}
+		{% endfor %}
+
+		{% if showcat == true %}
+
+			<h2 class="text-center text-white mt-5">{{ categorie.name }}</h2>
+			<div class="row container mx-auto">
+			{% endif %}
+
+			{% for product in categorie.products %}
+				{% if product.quantity > 0 %}
+					<!-- Card -->
+
+					<div class="col-4">
+						<div
+							class="card">
+
+							<!-- Card image -->
+							{% for key,image in product.productImages %}
+								{% if key == 0 %}
+									{% if product.quantity == 0 %}
+										<div class="imgoutofstock">
+										{% endif %}
+										<img class="card-img-top" src="{{ asset('images/products/'~image.imageName) }}" alt="{{image.imageName}}">
+										{% if product.quantity == 0 %}
+										</div>
+									{% endif %}
+								{% endif %}
+							{% else %}
+								<img class="card-img-top" src="{{ asset('images/webpages/imgnodispo.jpg') }}" alt="image indisponible">
+							{% endfor %}
+
+							<!-- Card content -->
+							<div
+								class="card-body">
+
+								<!-- Title -->
+								<h4 class="card-title">
+									<a>{{ product.Title }}</a>
+								</h4>
+								<!-- Text -->
+								<p class="card-text text-white">
+									<div>
+										{{ product.Description|length > 50 ? product.Description|slice(0, 50) ~ '...' : product.Description  }}
+									</div>
+									<div class="text-right">
+										{{ product.Price }}
+										€
+									</div>
+								</p>
+								<!-- Button -->
+								<div class="row">
+									<div class="mx-auto">
+										{% if is_granted('ROLE_USER') %}
+											{% if product.quantity != 0 %}
+												<button class="addtocart btn btn-brown" data-id="{{ product.id }}">Ajouter au panier</button>
+											{% endif %}
+										{% endif %}
+										<a class="btn btn-brown" href="{{ path('products_show', {'id': product.id}) }}">Voir</a>
+									</div>
+									{% if is_granted('ROLE_ADMIN') %}
+										<div class="mx-auto">
+											<a class="btn btn-danger" href="{{ path('products_edit', {'id': product.id}) }}">Modifier</a>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Card -->
+				{% endif %}
+			{% endfor %}
+			{% if showcat == true %}
+			</div>
+		{% endif %}
+	{% endfor %}
+	{% set havenocatproduct = 0 %}
+	{% for product in products %}
+		{% if havenocatproduct != 1 %}
+			<h2 class="text-center text-white mt-5">Autres</h2>
+			<div class="row container mx-auto">
+			{% endif %}
+			{% if product.categories is empty  %}
+
+				{% if product.quantity > 0 %}
+					<!-- Card -->
+
+					<div class="col-4">
+						<div
+							class="card">
+
+							<!-- Card image -->
+							{% for key,image in product.productImages %}
+								{% if key == 0 %}
+									<img class="card-img-top" src="{{ asset('images/products/'~image.imageName) }}" alt="{{image.imageName}}">
+								{% endif %}
+							{% else %}
+								<img class="card-img-top" src="{{ asset('images/webpages/imgnodispo.jpg') }}" alt="image indisponible">
+							{% endfor %}
+
+							<!-- Card content -->
+							<div
+								class="card-body">
+
+								<!-- Title -->
+								<h4 class="card-title">
+									<a>{{ product.Title }}</a>
+								</h4>
+								<!-- Text -->
+								<p class="card-text text-white">
+									<div>
+										{{ product.Description|length > 50 ? product.Description|slice(0, 50) ~ '...' : product.Description  }}
+									</div>
+									<div class="text-right">
+										{{ product.Price }}
+										€
+									</div>
+								</p>
+								<!-- Button -->
+								<div class="row">
+									<div class="mx-auto">
+										{% if is_granted('ROLE_USER') %}
+											{% if product.quantity != 0 %}
+												<button class="addtocart btn btn-brown" data-id="{{ product.id }}">Ajouter au panier</button>
+											{% endif %}
+										{% endif %}
+										<a class="btn btn-brown" href="{{ path('products_show', {'id': product.id}) }}">Voir</a>
+									</div>
+									{% if is_granted('ROLE_ADMIN') %}
+										<div class="mx-auto">
+											<a class="btn btn-danger" href="{{ path('products_edit', {'id': product.id}) }}">Modifier</a>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+				<!-- Card -->
+			{% endif %}
+
+			{% set havenocatproduct = 1 %}
+		{% endfor %}
+		{% if havenocatproduct == 1 %}
+		</div>
+	{% endif %}
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('products_new') }}" class="btn btn-brown">Créer un nouveau produit</a>
+	{% endif %}
+{% endblock %}

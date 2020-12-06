@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	{% for flashError in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
+	{% endfor %}
+
+	<h1 class="text-center text-white">Inscription</h1>
+	<div class="container card pb-5 pt-5">
+		{{ form_start(registrationForm) }}
+		<div class="row">
+			<div class="col-12">
+				{{ form_label(registrationForm.email, 'Adresse e-mail') }}
+				{{ form_widget(registrationForm.email) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.email) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				{{ form_label(registrationForm.firstName, 'Prénom') }}
+				{{ form_widget(registrationForm.firstName) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.firstName) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				{{ form_label(registrationForm.lastName, 'Nom') }}
+				{{ form_widget(registrationForm.lastName) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.lastName) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				{{ form_label(registrationForm.address, 'Adresse') }}
+				{{ form_widget(registrationForm.address) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.address) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-3">
+				{{ form_label(registrationForm.postalCode, 'Code Postal') }}
+				{{ form_widget(registrationForm.postalCode) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.postalCode) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-3">
+				{{ form_label(registrationForm.city, 'Ville') }}
+				{{ form_widget(registrationForm.city) }}
+				<div class="form-error">
+					{{ form_errors(registrationForm.city) }}
+				</div>
+			</div>
+			<div class="col-12 col-md-6">
+				{{ form_label(registrationForm.plainPassword, 'Mot de Passe') }}
+				{{ form_widget(registrationForm.plainPassword) }}
+			</div>
+			<div class="my-auto col-12 col-md-6 row">
+				<div class="col-6 mb-0 mt-auto">
+					{{ form_label(registrationForm.agreeTerms, 'Accepter les condition d\'utilisations') }}
+					{{ form_widget(registrationForm.agreeTerms) }}
+					<div class="form-error">
+						{{ form_errors(registrationForm.agreeTerms) }}
+					</div>
+				</div>
+				<div class="col-6 align-bottom">
+					<button type="submit" class="btn btn-light">S'inscrire</button>
+				</div>
+			</div>
+		</div>
+		{{ form_end(registrationForm) }}
+				</div>
+			{% endblock %}

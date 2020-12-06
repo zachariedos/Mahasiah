@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier
+{% endblock %}
+
+{% block body %}
+	<div class="result-message hidden alert-success w-75 mx-auto text-center p-3">
+		<p class="h4">Votre paiement à bien été accepté</p>
+		<p>Vous allez être redirigés vers la page d'accueil</p>
+	</div>
+	<div id="paiementbody" class="row my-5 mx-auto">
+		<div class="col-12 col-md-6 col-xl-8" id="cartpayementarticles">
+			{% set totalPrice = 0 %}
+			{% for product in cart.cartProducts %}
+				{% set totalPrice = totalPrice + (product.product.price * product.quantity) %}
+				<div class="card mb-3 w-100">
+					<div class="card-body row">
+
+						{% for key,image in product.product.productImages %}
+							{% if key == 0 %}
+								<div class="col-6">
+									<img width="100%" src="{{ asset('images/products/'~image.imageName) }}" alt="{{ image.imageName }}">
+								</div>
+							{% endif %}
+						{% else %}
+							<div class="col-6">
+								<img width="100%" src="{{ asset('images/webpages/imgnodispo.jpg') }}" alt="image indisponible">
+							</div>
+						{% endfor %}
+
+						<div class="col-6">
+							<a class="h1 text-white" href="{{ path('products_show', {'id': product.product.id}) }}">{{product.product.Title}}</a><br>
+							<p>{{ product.product.description|length > 50 ? product.product.description|slice(0, 50) ~ '...' : product.product.description  }}</p>
+							<div class="cartProductQuantityPrice">
+								<p>{{product.quantity}}
+									x
+									{{product.product.price}}
+									€</p>
+								<p class="font-weight-bold h4">
+									{{product.product.price * product.quantity}}
+									€</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class=" col-md-6 col-xl-4 d-flex paiementsidebar">
+			<div
+				id="paiementinfo" class="w-100">
+				{# sur grand écran #}
+				<div class="card h4  p-3 d-none d-md-block">
+					<p>{{ cart.cartProducts|length }}
+						{% if cart.cartProducts|length > 1 %}
+							Articles :
+						{% else %}
+							Article :
+						{% endif %}
+						<br>
+						<b>{{ totalPrice }}€</b>
+					</p>
+				</div>
+
+				{# sur petit écran #}
+				<div class=" h4 mt-5 d-md-none d-block">
+					<p>{{ cart.cartProducts|length }}
+						{% if cart.cartProducts|length > 1 %}
+							Articles :
+						{% else %}
+							Article :
+						{% endif %}
+
+						<b class="text-right">{{ totalPrice }}€</b>
+					</p>
+				</div>
+
+				<!-- Display a payment form -->
+				<form id="payment-form">
+					<div class="form-group">
+						<label for="inputAddress">Adresse de livraison</label>
+						<input type="text" class="form-control" id="inputAddress" placeholder="{{app.user.address}}" value="{{app.user.address}}">
+					</div>
+					<div class="row">
+						<div class="form-group col-6">
+							<label for="inputCP">Code Postale</label>
+							<input type="text" class="form-control" id="inputCP" placeholder="{{app.user.postalCode}}" value="{{app.user.postalCode}}">
+						</div>
+						<div class="form-group col-6">
+							<label for="inputCity">Ville</label>
+							<input type="text" class="form-control" id="inputCity" placeholder="{{app.user.city}}" value="{{app.user.city}}">
+						</div>
+					</div>
+					<div id="card-element"><!--Stripe.js injects the Card Element--></div>
+
+					<button id="submit">
+						<div class="spinner-border hidden" id="spinner" role="status">
+							<span class="sr-only">Chargement...</span>
+						</div>
+						<span id="button-text">Passer la commande</span>
+
+					</button>
+					<p id="card-error" class="alert alert-danger hidden" role="alert"></p>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	<script src="https://js.stripe.com/v3/"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+	<script src="{{ asset('js/stripe.js') }}" defer></script>
+{% endblock %}
