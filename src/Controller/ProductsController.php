@@ -51,7 +51,7 @@ class ProductsController extends AbstractController
         $Products = $paginator->paginate(
             $query,             // Requête créée précedemment
             $requestedPage,     // Numéro de la page demandée
-            10              // Nombre d'articles affichés par page
+            null              // Nombre d'articles affichés par page
         );
 
         return $this->render('products/index.html.twig', [
