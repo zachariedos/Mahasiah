@@ -28,11 +28,6 @@ class Order
     private $orderProducts;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $deliveryAddress;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      */
     private $User;
@@ -50,6 +45,11 @@ class Order
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     protected $updatedAt;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $confirmeToken;
 
     public function __construct()
     {
@@ -87,18 +87,6 @@ class Order
                 $orderProduct->setTheorder(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getDeliveryAddress(): ?string
-    {
-        return $this->deliveryAddress;
-    }
-
-    public function setDeliveryAddress(string $deliveryAddress): self
-    {
-        $this->deliveryAddress = $deliveryAddress;
 
         return $this;
     }
@@ -150,6 +138,18 @@ class Order
     public function setUpdatedAt(DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getConfirmeToken(): ?int
+    {
+        return $this->confirmeToken;
+    }
+
+    public function setConfirmeToken(int $confirmeToken): self
+    {
+        $this->confirmeToken = $confirmeToken;
 
         return $this;
     }

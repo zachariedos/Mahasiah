@@ -1,67 +1,179 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Products
+{% block title %}
+ Boutique Mahasiah
 {% endblock %}
 
 {% block body %}
-	<h1>Products</h1>
-	<div class="container ">
-		<div class="card w-100">
-			<p>{{ product.id }}</p>
-		</div>
+	<h1 class="text-center text-white">
+	{{product.Title}}
+	</h1>
+	<div class="container  col-lg-7 col-12 ">
+		<div class="card container px-0 mb-5">
+		<!-- Carousel Wrapper -->
+			<div class="card-img-top" >
+				<div id="carousel"
+					class="carousel slide carousel-fade mx-auto"
+					data-ride="carousel" >
+					<!-- Indicators -->
+					<ol class="carousel-indicators">
 
-	</div>
-	<table class="table">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ product.id }}</td>
-			</tr>
-			<tr>
-				<th>Title</th>
-				<td>{{ product.Title }}</td>
-			</tr>
-			<tr>
-				<th>Description</th>
-				<td>{{ product.Description }}</td>
-			</tr>
-			<tr>
-				<th>Price</th>
-				<td>{{ product.Price }}</td>
-			</tr>
-			<tr>
-				<th>Quantity</th>
-				<td>{{ product.Quantity }}</td>
-			</tr>
-			<tr>
-				<th>Size</th>
-				<td>{{ product.Size }}</td>
-			</tr>
-			<tr>
-				<th>Materials</th>
-				<td>{{ product.Materials }}</td>
-			</tr>
-			<tr>
-				{% if product.quantity != 0 %}
-					<th>add product to cart</th>
-					<td>
-						<a class="addtocart" data-id="{{ product.id }}" data-quantity="1">add to cart</a>
-						{% if product.quantity > 1 %}
-							<div class="def-number-input number-input safari_only">
-								<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
-								<input class="quantity" id="quantityofproducttocart" min="1" name="quantity" max="{{ product.quantity }}" type="number">
-								<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
-							</div>
+					</li>
+					{% for key,image in product.productImages %}
+					{% if key == 0 %}
+						<li data-target="#carousel"
+						data-slide-to="0"
+						class="active">
+						{% else %}
+						<li data-target="#carousel" data-slide-to="{{key}}"></li>
 						{% endif %}
+					{% endfor %}
+					</ol>
+					<!-- /.Indicators -->
+					<!-- Slides -->
+					<div class="carousel-inner py-5" role="listbox"   >
+					<!-- First slide -->
+				
+						{% for key,image in product.productImages %}
+						{% if key == 0 %}
+						
+							<div class="carousel-item active"  style="overflow:hidden;">
+							{% else %}
+								<div class="carousel-item"  style="overflow:hidden;">
+							{% endif %}
+								<img class="d-block mx-auto" style=" width: 400px; height: 300px; object-fit: cover; border: 5px solid black;" src="{{ asset('images/products/'~image.imageName) }}" alt="{{image.imageName}}">
+							</div>
+						{% else %}
+						<div class="carousel-item active" style="overflow:hidden;">
+							<img class="d-block mx-auto" style=" width: 400px; height: 300px; object-fit: cover; border: 5px solid black;" src="{{ asset('images/webpages/imgnodispo.jpg') }}" alt="image indisponible">
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<!-- /.Carousel Wrapper -->
+			</div>
+			<div class="w-100 ">
+		<table class="table tableproduct table-striped bg-wheat mb-0">
+			<tbody>
+				<tr>
+					<th>
+					Nom du produit :
+					</th>
+					<td>
+					{{ product.Title }}
 					</td>
-				{% endif %}
-			</tr>
-		</tbody>
-	</table>
+				</tr>
+				<tr>
+					<th>
+					Description :
+					</th>
+					<td>
+					{{ product.Description }}
+					</td>
+				</tr>
+				<tr>
+					<th>
+					Prix :
+					</th>
+					<td>
+					{{ product.Price }}
+					</td>
+				</tr>
+				<tr>
+					<th>
+					Quantité : 
+					</th>
+					<td>
+					{{ product.Quantity }}
+					</td>
+				</tr>
+				<tr>
+					<th>
+					Taille : 
+					</th>
+					<td>
+					{{ product.Size }}
+					</td>
+				</tr>
+				<tr>
+					<th>
+					Matériaux : 
+					</th>
+					<td>
+					{{ product.Materials }}
+					</td>
+				</tr>
+				<tr>
+					<th>
+					Catégories : 
+					</th>
+					<td>
+					{% for key,categorie in product.Categories %}
+						{% if key + 1 != product.Categories|length  %}
+							{{categorie.Name}} , 
+						{% else %}
+							{{categorie.Name}}
+						{% endif %}
+					{% endfor %}
+					</td>
+				</tr>
+				<tr>
+				{% if app.user %}
+					{% if product.quantity != 0 %}
+					<th>
 
-	<a href="{{ path('products_index') }}">back to list</a>
+							{% if product.quantity > 1 %}
+							<div class="def-number-input number-input safari_only" style="background: white;">
+								<button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+								class="minus">
 
-	<a href="{{ path('products_edit', {'id': product.id}) }}">edit</a>
+								</button>
+								<input class="quantity"
+								id="quantityofproducttocart"
+								min="1"
+								name="quantity"
+								max="{{ product.quantity }}"
+								type="number" />
+								<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+								class="plus">
 
-	{{ include('products/_delete_form.html.twig') }}
+								</button>
+							</div>
+							{% endif %}
+					</th>
+						
+						<td>
+						<a class="addtocart  font-weight-bold" data-id="{{ product.id }}" data-quantity="1">
+							Ajouter au panier
+						</a>
+						</td>
+						{% endif %}
+					{% endif %}
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row container">
+	{% if is_granted('ROLE_ADMIN') %}
+		<div class="col-6">
+			<a class="btn btn-light w-100" href="{{
+				path(
+				'products_edit',
+				{
+					id: product.id
+				}
+				)
+				}}">
+				Modifier
+			</a>
+		</div>
+		<div class="col-6">
+			{{ include('products/_delete_form.html.twig') }}
+		</div>
+	{% endif %}
+	<div class="col-6">
+	  <a class="btn btn-light" href="{{ path('products_index') }}">Revenir aux produits</a>
+	</div>
+  </div>
+</div>
 {% endblock %}

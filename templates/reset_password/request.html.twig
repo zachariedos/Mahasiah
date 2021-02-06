@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réinitialisez votre mot de passe
+{% block title %}Réinitialiser votre mot de passe
 {% endblock %}
 
 {% block body %}
 	{% for flashError in app.flashes('reset_password_error') %}
 		<div class="alert alert-danger" role="alert">{{ flashError }}</div>
 	{% endfor %}
-	<h1 class="text-center text-white">Réinitialisez votre mot de passe</h1>
-	<div class="card w-50 p-3 mx-auto align-middle h-100 d-flex">
+	<h1 class="text-center text-white">Réinitialiser votre mot de passe</h1>
+	<div class="container-fluid container-md  col-lg-6 card py-5 my-5">
 		{{ form_start(requestForm) }}
 		{{ form_row(requestForm.email) }}
 		<div>

@@ -12,6 +12,24 @@ body {
   background-size: cover !important;
 }
 
+
+.scrollToTop{
+  text-align:center; 
+  background: whiteSmoke;
+  font-weight: bold;
+  height: 50px;
+  width: 50px;
+  font-size: 2rem;
+  border-radius: 50%;
+  color: #444;
+  text-decoration: none;
+  position:fixed;
+  bottom:75px;
+  right:10px;
+  display:none;
+  z-index:99;
+}
+
 /* navbar */
 nav {
   background-color: rgb(131, 75, 35) !important;
@@ -19,10 +37,16 @@ nav {
 }
 
 /* panier */
-
-.cartProductQuantityPrice {
-  position: absolute;
-  bottom: 0;
+@media screen and (max-width: 1050px) {
+  .cartProductQuantityPrice {
+    display:block;
+  }
+}
+@media screen and (min-width: 1050px) {
+  .cartProductQuantityPrice {
+    position: absolute;
+    bottom: 0;
+  }
 }
 div#displayarticleofcart {
   width: 250px !important;
@@ -44,6 +68,11 @@ div#displayarticleofcart {
 .dropdown-item:hover {
   background-color: rgba(114, 55, 12, 0.7) !important;
 }
+.delproductoncart{
+  bottom: 2px;
+  right: 5px;
+  font-size: x-large;
+}
 
 /* formumlaire */
 .form-control div.input {
@@ -55,6 +84,9 @@ div#displayarticleofcart {
   color: black !important;
   -webkit-appearance: none;
   -moz-appearance: textfield;
+}
+.form-control[search]::placeholder {
+  color: rgb(75, 75, 75) !important;
 }
 .md-form .form-control {
   background: transparent !important;
@@ -113,6 +145,10 @@ label {
       margin-top: -0.3rem;
     }
   }
+}
+
+#paiementbody{
+  min-height: 75vh;
 }
 
 /* Multi Selection */
@@ -194,7 +230,12 @@ label {
   height: 2rem;
   color: #495057;
 }
+
+
 /* divers utilitaires */
+.fa-trash-alt:hover{
+cursor: pointer;
+}
 .text-white {
   color: white !important;
 }
@@ -203,6 +244,9 @@ label {
 }
 .btn-light {
   color: black !important;
+}
+.bg-wheat{
+  background: wheat;
 }
 li {
   list-style: none !important;

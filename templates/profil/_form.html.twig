@@ -21,27 +21,6 @@
 			{{ form_errors(form.lastName) }}
 		</div>
 	</div>
-	<div class="col-12 col-md-6">
-		{{ form_label(form.address, 'Adresse') }}
-		{{ form_widget(form.address) }}
-		<div class="form-error">
-			{{ form_errors(form.address) }}
-		</div>
-	</div>
-	<div class="col-12 col-md-3">
-		{{ form_label(form.postalCode, 'Code Postal') }}
-		{{ form_widget(form.postalCode) }}
-		<div class="form-error">
-			{{ form_errors(form.postalCode) }}
-		</div>
-	</div>
-	<div class="col-12 col-md-3">
-		{{ form_label(form.city, 'Ville') }}
-		{{ form_widget(form.city) }}
-		<div class="form-error">
-			{{ form_errors(form.city) }}
-		</div>
-	</div>
 	{{ form_widget(form) }}
 	<button class="btn btn-light">{{ button_label|default('Enregistrer') }}</button>
 	{{ form_end(form) }}

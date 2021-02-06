@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -52,7 +54,7 @@ class CartController extends AbstractController
         }
 
         // on définit la clé secrete pour pouvoir envoyer la requete de paiement a stripe
-        \Stripe\Stripe::setApiKey('sk_test_51HoXvtBkzDMwRKFJ3cLGR8pWi5QX6yBEHzmPFj9Vhk2tSuxCx3ka5OJnwpPf2aIamTKVCD1WeF0ASBar3KOMt6Nz00BttZjPmv');
+        \Stripe\Stripe::setApiKey('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');
 
         // on créer et on envoie la requete de paiement dans le stripe.js qui envoie la requete a stripe pour créer le paiement
         $paymentIntent = \Stripe\PaymentIntent::create([
@@ -74,16 +76,10 @@ class CartController extends AbstractController
     /**
      * @Route("/checkout/succes", name="cart_checkout_succes", methods={"POST"})
      */
-    public function checkoutsucces(Request $request): Response
+    public function checkoutsucces(Request $request, MailerInterface $mailer): Response
     {
         if ($request->isXmlHttpRequest()) {
             $entityManager = $this->getDoctrine()->getManager();
-
-            // on recupere l'addresse
-            $address = $request->get('address');
-            $city = $request->get('city');
-            $postalCode = $request->get('postalCode');
-            dump($request);
 
             // on recupere l'utilisateur actuelle donc celui qui a payé le panier
             $user = $this->getUser();
@@ -97,21 +93,6 @@ class CartController extends AbstractController
             // on créer une commande pour cet utilisateur
             $order = new Order;
             $order->setUser($user);
-
-            // si l'adresse n'a pas été remplis dans le formulaire on prend l'adresse qu'il à renseignez sur son profil
-            if (empty($address)) {
-                $address = $user->getAddress();
-            }
-            if (empty($city)) {
-                $city = $user->getCity();
-            }
-            if (empty($postalCode)) {
-                $postalCode = $user->getPostalCode();
-            }
-
-            // on attribut l'adresse de livraison a la commande
-            $order->setDeliveryAddress($address . " | " . $postalCode . ", " . $city);
-
             $response = 0;
             foreach ($products as $product) {
                 // on ajoute les produit un par un a la commande
@@ -119,6 +100,7 @@ class CartController extends AbstractController
                 $orderProduct->setProducts($product->getProduct());
                 $orderProduct->setQuantity($product->getQuantity());
                 $order->addOrderProduct($orderProduct);
+                $order->setConfirmeToken(random_int(11111111, 99999999));
                 $entityManager->persist($orderProduct);
 
                 // on supprime les articles dont il n'y a plus d'exemplaire apres l'achat et on enleve le nombre d'exemplaire acheté
@@ -136,6 +118,23 @@ class CartController extends AbstractController
             $entityManager->persist($order);
             $entityManager->persist($cart);
             $entityManager->flush();
+            
+                // envoie d'un email au client pour lui dire que sa commande à bien été prise en compte
+                $email = (new Email())
+                    ->from('MahasiahBoutique@gmail.com')
+                    ->to($user->getEmail())
+                    ->subject('Commande sur la boutique')
+                    ->html('Votre commande à bien été pris en compte, pour récupérer vos articles en magasin, présentez votre jeton de commande : ' . $order->getConfirmeToken());
+                $mailer->send($email);
+
+                // envoie d'un email a l'administrateur pour lui dire qu'une commande à été passé
+                $email = (new Email())
+                    ->from('MahasiahBoutique@gmail.com')
+                    ->to('MahasiahBoutique@gmail.com')
+                    ->subject('Commande sur la boutique')
+                    ->html('Une <a href="mahasiah.fr/order/'. $order->getId().'">Commande</a> a été passé. ' );
+                $mailer->send($email);
+
         } else {
             return $this->redirectToRoute('products_index');
         }

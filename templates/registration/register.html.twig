@@ -9,7 +9,7 @@
 	{% endfor %}
 
 	<h1 class="text-center text-white">Inscription</h1>
-	<div class="container card pb-5 pt-5">
+	<div class="container card pb-5 pt-5 my-5">
 		{{ form_start(registrationForm) }}
 		<div class="row">
 			<div class="col-12">
@@ -34,41 +34,12 @@
 				</div>
 			</div>
 			<div class="col-12 col-md-6">
-				{{ form_label(registrationForm.address, 'Adresse') }}
-				{{ form_widget(registrationForm.address) }}
-				<div class="form-error">
-					{{ form_errors(registrationForm.address) }}
-				</div>
-			</div>
-			<div class="col-12 col-md-3">
-				{{ form_label(registrationForm.postalCode, 'Code Postal') }}
-				{{ form_widget(registrationForm.postalCode) }}
-				<div class="form-error">
-					{{ form_errors(registrationForm.postalCode) }}
-				</div>
-			</div>
-			<div class="col-12 col-md-3">
-				{{ form_label(registrationForm.city, 'Ville') }}
-				{{ form_widget(registrationForm.city) }}
-				<div class="form-error">
-					{{ form_errors(registrationForm.city) }}
-				</div>
-			</div>
-			<div class="col-12 col-md-6">
 				{{ form_label(registrationForm.plainPassword, 'Mot de Passe') }}
 				{{ form_widget(registrationForm.plainPassword) }}
 			</div>
-			<div class="my-auto col-12 col-md-6 row">
-				<div class="col-6 mb-0 mt-auto">
-					{{ form_label(registrationForm.agreeTerms, 'Accepter les condition d\'utilisations') }}
-					{{ form_widget(registrationForm.agreeTerms) }}
-					<div class="form-error">
-						{{ form_errors(registrationForm.agreeTerms) }}
-					</div>
-				</div>
-				<div class="col-6 align-bottom">
-					<button type="submit" class="btn btn-light">S'inscrire</button>
-				</div>
+			<div class="col-12 col-md-6">
+			<label for="registerSubmit" class="required">En vous inscrivant vous acceptez les <a href="{{ path('cgu') }}">conditions d'utilisation</a> et les <a href="{{ path('cgv') }}">conditions générales de vente</a></label>
+				<input id="registerSubmit" class="form-control" style="background-color:white!important;" type="submit" value="S'inscrire" class="btn btn-light">
 			</div>
 		</div>
 		{{ form_end(registrationForm) }}

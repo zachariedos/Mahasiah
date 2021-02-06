@@ -48,11 +48,6 @@ class User implements UserInterface
      */
     private $lastName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
-
 
     /**
      * @ORM\Column(type="boolean")
@@ -68,16 +63,6 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="User")
      */
     private $orders;
-
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
-    private $postalCode;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $City;
 
 
     public function __construct()
@@ -187,18 +172,6 @@ class User implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
 
         return $this;
     }

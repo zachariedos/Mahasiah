@@ -1,29 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}List des commandes
+{% block title %}Liste des commandes
 {% endblock %}
 {% block stylesheets %}{% endblock %}
 {% block body %}
 	<h1 class="text-center text-white">Commandes</h1>
 	<div class="row container mx-auto">
-		{% for order in orders %}
-			<div class="col-12 col-lg-6">
-				<div class="card p-3 mb-3">
-					<p>Nombre de produits dans la commande  :
-						<b>{{ order.orderProducts|length }}</b>
-					</p>
-					<p>Commandé le
-						<b>{{ order.createdAt|date("d/m/Y à H:i:s") }}</b>
-						par
-						<b>{{ order.user.email }}</b>
-					</p>
-					<p>Adresse de livraison :
-						<b>{{ order.deliveryAddress}}</b>
-					</p>
-					<a class="btn btn-light" href="{{ path('order_show', {'id': order.id}) }}">Voir la commande</a>
-				</div>
-			</div>
-		{% endfor %}
+		<div class="form-outline">
+			<input type="search" class="form-control" id="ordertablesearch" placeholder="Rechercher une commande  ...">
+		</div>
+		<table class="table bg-white">
+			<thead>
+				<tr>
+					<th>date de la commande</th>
+					<th>adresse e-mail du client</th>
+					<th>Jeton de commande</th>
+					<th>Voir la commande</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+				{% for order in orders %}
+					<tr>
+						<td>{{ order.createdAt|date("d/m/Y à H:i:s") }}</td>
+						<td>{{ order.user.email }}</td>
+						<td>{{ order.ConfirmeToken }}</td>
+						<td><a class="font-weight-bold" href="{{ path('order_show', {'id': order.id}) }}">Voir la commande</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 	<div class="d-flex justify-content-center">
 		<p>{{ knp_pagination_render(orders) }}</p>

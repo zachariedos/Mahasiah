@@ -105,6 +105,9 @@
     "egulias/email-validator": {
         "version": "2.1.22"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "jms/metadata": {
         "version": "2.3.0"
     },

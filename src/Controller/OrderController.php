@@ -27,9 +27,9 @@ class OrderController extends AbstractController
 
         $query = $orderRepository->findAll();
         $order = $paginator->paginate(
-            $query, /* query NOT result */
+            $query,
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            999999 /*limite par page*/
         );
 
         return $this->render('order/index.html.twig', ['orders' => $order,]);
@@ -52,10 +52,14 @@ class OrderController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $order->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $orderproducts = $order->getOrderProducts();
+            foreach ($orderproducts as $orderproduct) {
+                $entityManager->remove($orderproduct);
+                dump($orderproduct);
+            }
             $entityManager->remove($order);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('order_index');
     }
 }

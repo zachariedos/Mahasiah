@@ -1,38 +1,32 @@
-$( document ).ready(function() {
-    
-    // confirmation que le produit a bien été expédié
-    $('.ArticleSent').click(function(){
-        if ( confirm( "Êtes-vous sûr que le produit a bien été expédié" ) ) {
-            removefromorder($(this).attr("data-id"));
+$(document).ready(function () {
+
+    $("#ordertablesearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
+    // retour en haut
+    $(window).scroll(function(){
+        if ($(this).scrollTop() > 100) {
+            $('.scrollToTop').fadeIn();
+        } else {
+            $('.scrollToTop').fadeOut();
         }
     });
 
-    $(window).scroll(function () {   
-        
-        if($(window).scrollTop() > 200) {
-        $('.paiementsidebar').css('position','fixed');
-        $('.paiementsidebar').css('top','0'); 
-        }
-    
-        else if ($(window).scrollTop() <= 200) {
-        $('.paiementsidebar').css('position','');
-        $('.paiementsidebar').css('top','');
-        }  
-        if ($('.paiementsidebar').offset().top + $(".paiementsidebar").height() > $("#footer").offset().top) {
-            $('.paiementsidebar').css('top',-($(".paiementsidebar").offset().top + $(".paiementsidebar").height() - $("#footer").offset().top));
+    $('.acartbutton').click(function (e) {
+        if ($.trim($(this).text()) == "") {
+            e.preventDefault();
+            console.log($(this).text());
         }
     });
-    
-    // on change la valeur des quil y a une modification dans l'adresse de livraison pour que l'adresse soit bonne
-    $(document).keyup(function(){
-        $('#inputAddress').attr("value", $('#inputAddress').val());
-        $('#inputCity').attr("value", $('#inputCity').val());
-        $('#inputCP').attr("value", $('#inputCP').val());
-    });
-    $(document).click(function(){
-        $('#inputAddress').attr("value", $('#inputAddress').val());
-        $('#inputCity').attr("value", $('#inputCity').val());
-        $('#inputCP').attr("value", $('#inputCP').val());
+
+    //Click event to scroll to top
+    $('.scrollToTop').click(function(){
+        $('html, body').animate({scrollTop : 0},800);
+        return false;
     });
 
     // On met la quantité par defaut
@@ -121,6 +115,9 @@ $('.dropdown-menu div.dropdown-item').click(function(e) {
     e.stopPropagation();
 });
 
+
+});
+
  // Ajout d'un produit dans le panier en ajax et Rechargement des éléments concerné avoir un affichage a jour
 $(".addtocart").on("click", function(){
     $productid = $(this).attr('data-id');
@@ -135,20 +132,9 @@ $(".addtocart").on("click", function(){
  function removefromcart($productid){
         $.post('/products/removefromcart/'+$productid, function() {
         $( "#cart-preview" ).load(window.location.href + " #cart-preview" );
-        $( "#cartpayementarticles" ).load(window.location.href + " #cartpayementarticles > *" );
+            $("#cartpayementarticles").load(window.location.href + " #cartpayementarticles > *");
+            if (window.location.pathname == '/cart/') {
+                location.reload();
+        }
     });
  }
-
-// Suppression d'un produit dans le panier en ajax et Rechargement des éléments concerné avoir un affichage a jour
- function removefromorder($productid){
-    $.post('/products/removefromorder/'+$productid, function(data) {
-        if(data == "orderClosed"){
-            console.log($productid)
-            window.location.href = window.location.href.split('/order')[0]+"/order";
-
-        }
-    $( "#orderBody" ).load(window.location.href + " #orderBody > *" );
-});
-}
-});
-

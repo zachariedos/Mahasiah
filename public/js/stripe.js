@@ -1,4 +1,22 @@
-var stripe = Stripe("pk_test_51HoXvtBkzDMwRKFJBccdxZBRPB1jzTQNyCze7VtLe7MMGSiZEIpGCKsLl8PKtdiyCAyrB7vMz6XySREtG7le5AQM00QeLa9cfL");
+
+    $(window).scroll(function () {   
+        
+      if($(window).scrollTop() > 200) {
+      $('.paiementsidebar').css('position','fixed');
+      $('.paiementsidebar').css('top','0'); 
+      }
+  
+      else if ($(window).scrollTop() <= 200) {
+      $('.paiementsidebar').css('position','');
+      $('.paiementsidebar').css('top','');
+      }  
+      if ($('.paiementsidebar').offset().top + $(".paiementsidebar").height() > $("#footer").offset().top) {
+          $('.paiementsidebar').css('top',-($(".paiementsidebar").offset().top + $(".paiementsidebar").height() - $("#footer").offset().top));
+      }
+  });
+  
+  
+var stripe = Stripe("pk_live_51HoXvtBkzDMwRKFJbV0wLTuEC9duqtNCbUKRk17E5ev8CtVgFJ6oUTNCAq5fwXkBAfIjbERISUhA2rq5i9PXaAKC008CtoiUJr");
 
 // The items the customer wants to buy
 

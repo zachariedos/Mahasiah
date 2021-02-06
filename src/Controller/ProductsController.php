@@ -51,11 +51,11 @@ class ProductsController extends AbstractController
         $Products = $paginator->paginate(
             $query,             // Requête créée précedemment
             $requestedPage,     // Numéro de la page demandée
-            null              // Nombre d'articles affichés par page
+            9999999              // on ne limite pas le nombre d'article affiché par page
         );
 
         return $this->render('products/index.html.twig', [
-            'products' => $products,
+            'products' => $Products,
             'categories' => $Categories,
             'form' => $form->createView(),
         ]);
@@ -183,44 +183,6 @@ class ProductsController extends AbstractController
             }
         } else {
             return $this->redirectToRoute('products_index');
-        }
-    }
-
-    /**
-     * @Route("/removefromorder/{id}", name="products_removefromorder", methods={"POST"})
-     */
-    public function removeFromOrder(Request $request, OrderProducts $product, MailerInterface $mailer): Response
-    {
-        if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
-            $user = $this->getUser();
-            if ($user) {
-
-                $order = $product->getTheorder();
-                $customer = $order->getUser();
-                $entityManager = $this->getDoctrine()->getManager();
-                $order->removeOrderProduct($product);
-                $entityManager->persist($order);
-
-                // envoie d'un email au client pour lui dire que son colis à été expédié
-                $email = (new Email())
-                    ->from('Mahasaiah-Boutique@gmail.com')
-                    ->to($customer->getEmail())
-                    ->subject('Envoie de votre colis')
-                    ->html('Votre colis <br> <b>' . $product->getProducts()->getTitle() . '</b> x ' . $product->getQuantity() . " a été expédié");
-
-                $mailer->send($email);
-
-                if ($order->getOrderProducts()->isEmpty()) {
-                    $entityManager->remove($order);
-                    $entityManager->flush();
-                    return new JsonResponse("orderClosed");
-                }
-                $entityManager->flush();
-
-                return new JsonResponse("reload");
-            }
-        } else {
-            return $this->redirectToRoute('order_index');
         }
     }
 

@@ -3,32 +3,32 @@
 {{ form_start(form) }}
 <div class="row container mx-auto">
 	<div class="col-8">
-		{{ form_label(form.Title)}}
+		{{ form_label(form.Title, 'Titre')}}
 		{{ form_widget(form.Title)}}
 	</div>
 
 	<div class="col-4">
-		{{ form_label(form.Price)}}
+		{{ form_label(form.Price, 'Prix')}}
 		{{ form_widget(form.Price)}}
 	</div>
 
 	<div class="col-6">
-		{{ form_label(form.Quantity)}}
+		{{ form_label(form.Quantity, 'Quantité')}}
 		{{ form_widget(form.Quantity)}}
 	</div>
 
 	<div class="col-6">
-		{{ form_label(form.Size)}}
+		{{ form_label(form.Size, 'Taille')}}
 		{{ form_widget(form.Size)}}
 	</div>
 
 	<div class="col-7 my-3">
-		{{ form_label(form.Materials)}}
+		{{ form_label(form.Materials, 'Matériaux')}}
 		{{ form_widget(form.Materials)}}
 	</div>
 
 	<div class="col-5 mt-1">
-		{{ form_label(form.Categories)}}
+		{{ form_label(form.Categories, 'Catégories')}}
 		{{ form_widget(form.Categories)}}
 	</div>
 	<div class="col-12">

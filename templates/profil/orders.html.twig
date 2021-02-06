@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order
+{% block title %}Vos commandes
 {% endblock %}
 
 {% block body %}
@@ -9,11 +9,6 @@
 			<div class="card col-12 my-3 py-2">
 				<div class="row">
 					<div class="text-left col-6">
-						<p>Adresse :
-							<b>{{order.deliveryAddress}}</b>
-						</p>
-					</div>
-					<div class="text-right col-6">
 						<p>Date de le commande:
 							<b>{{ order.createdAt|date("d/m/Y") }}</b>
 						</p>
@@ -30,6 +25,7 @@
 								<div class="card h-100 cardiinorder">
 									<div class="card-body row">
 
+										{# affichage de la première image pour chaque produit #}
 										{% for key,image in product.products.productImages %}
 											{% if key == 0 %}
 												<div class="col-6">
@@ -58,9 +54,15 @@
 							Prix Total de la commande :
 							<b>{{totalPrice}}€</b>
 						</div>
+						<div class="col-12">Jeton de commande ( à présenter en magasin pour récupérer vos articles) :
+							<b>{{ order.ConfirmeToken }}</b>
+						</div>
 					</div>
 				</div>
 			</div>
+		{% else %}
+		<p class="h1 text-white text-center mx-auto">Vous n'avez aucune commande en cours </p>	
 		{% endfor %}
+
 	</div>
-</div>{% endblock %}
+{% endblock %}

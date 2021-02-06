@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block body %}
-	<p>Un e-mail a été envoyé contenant un lien sur lequel vous pouvez cliquer pour réinitialiser votre mot de passe. Ce lien expirera dans
+	<p class="text-white">Un e-mail a été envoyé contenant un lien sur lequel vous pouvez cliquer pour réinitialiser votre mot de passe. Ce lien expirera dans
 		{{ tokenLifetime|date('g') }}heure(s).</p>
-	<p>Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou
-		<a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+	<p class="text-white">Si vous ne recevez pas d'e-mail, veuillez vérifier votre dossier spam ou
+		<a href="{{ path('app_forgot_password_request') }}" class="text-black font-weight-bold">réessayer</a>.</p>
 {% endblock %}

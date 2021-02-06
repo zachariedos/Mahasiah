@@ -50,15 +50,17 @@
 
 			<!--Navbar -->
 			<nav class="mb-1 navbar navbar-expand-lg navbar-light lighten-1">
-				<a class="navbar-brand" href="{{ path('index') }}">
+				<a class="navbar-brand " href="{{ path('index') }}">
 					<img src="{{ asset('images/webpages/mahasiah.png') }}" width="40" height="40" alt="">
 				</a>
+				<a class="text-white h4" href="{{ path('index') }}"> Accueil </a>
+				
 				{# si l'utilisateur est connecté on affiche son profil et son panier #}
 				{% if app.user %}
 					<ul class="navbar-nav ml-auto cart-preview-ul nav-flex-icons">
 						<li id="cart-preview" class="nav-item dropdown">
 							<div class="d-block d-lg-none">
-								<a class="nav-link" href="{{ path('cart_show')}}">
+								<a class="nav-link text-white acartbutton" href="{{ path('cart_show')}}">
 									{% if app.user.cart %}
 										{{ app.user.cart.cartProducts|length }}
 									{% endif %}
@@ -66,7 +68,7 @@
 								</a>
 							</div>
 							<div class="d-none d-lg-block">
-								<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-cart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a class="nav-link dropdown-toggle text-white acartbutton" id="navbarDropdownMenuLink-cart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									{% if app.user.cart %}
 										{{ app.user.cart.cartProducts|length }}
 									{% endif %}
@@ -113,7 +115,7 @@
 							</div>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{app.user.firstname}}<i class="fas fa-user"></i>
+							<a class="nav-link dropdown-toggle text-white" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{app.user.firstname}}<i class="fas fa-user"></i>
 							</a>
 							<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary text-center pb-0" aria-labelledby="userDropdown">
 								<a class="dropdown-item" href="{{ path('profil_order')}}">Vos commandes</a>
@@ -121,6 +123,18 @@
 								<a class="dropdown-item" href="{{ path('app_logout')}}">Déconnexion</a>
 							</div>
 						</li>
+
+						{% if is_granted('ROLE_ADMIN') %}
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle text-white" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administration<i class="fas fa-user-cog"></i>
+								</a>
+								<div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary text-center pb-0" aria-labelledby="userDropdown">
+									<a class="dropdown-item" href="{{ path('products_new')}}">Ajouter un produit</a>
+									<a class="dropdown-item" href="{{ path('order_index')}}">Voir les commandes</a>
+									<a class="dropdown-item" href="{{ path('admin')}}">Panneau d'administration</a>
+								</div>
+							</li>
+						{% endif %}
 
 					{% else %}
 						<div class="ml-auto mr-0 text-decoration-none loginsinglebutton">
@@ -160,6 +174,7 @@
 						<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Compte</h5>
 
 						<ul class="list-unstyled">
+						<u>
 							{% if app.user %}
 								<li>
 									<a href="{{ path('profil_edit') }}">Modifier votre compte</a>
@@ -175,6 +190,7 @@
 									<a href="{{ path('app_register') }}">Inscription</a>
 								</li>
 							{% endif %}
+						</u>
 						</ul>
 
 					</div>
@@ -193,14 +209,15 @@
 							<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Achats</h5>
 
 							<ul class="list-unstyled">
+							<u>
 								<li>
 									<a href="{{ path('cart_show') }}">Votre Panier</a>
 								</li>
 								<li>
 									<a href="{{ path('profil_order') }}">Commandes passées</a>
 								</li>
+							</u>
 							</ul>
-
 						</div>
 					{% endif %}
 					<!-- Grid column -->
@@ -216,9 +233,20 @@
 						<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Autres</h5>
 
 						<ul class="list-unstyled">
+						<u>
 							<li>
 								<a href="{{ path('index') }}">Accueil</a>
 							</li>
+							<li>
+								<a href="{{ path('cgu') }}">Conditions générales d'utilisation</a>
+							</li>
+							<li>
+								<a href="{{ path('cgv') }}">Conditions générales de vente</a>
+							</li>
+							<li>
+								<a href="{{ path('clickandcollect') }}"> Click and collect </a>
+							</li>
+							</u>
 						</ul>
 
 					</div>
@@ -236,9 +264,11 @@
 							<h5 class="font-weight-bold text-uppercase mt-3 mb-4">Administration</h5>
 
 							<ul class="list-unstyled">
+							<u>
 								<li>
 									<a href="{{ path('admin') }}">Panneau d'Administration</a>
 								</li>
+							</u>
 							</ul>
 
 						</div>
@@ -291,10 +321,9 @@
 
 			{# script global #}
 			<script src="{{ asset('js/script.js') }}"></script>
-
+			
 			{# Selecteurs bootstrap #}
 			<script src="{{ asset('js/bootstrap-select-1.13.14/js/bootstrap-select.js') }}"></script>
 			{% block javascripts %}{% endblock %}
-		</body>
 	</body>
-</html></body></html>
+</html>

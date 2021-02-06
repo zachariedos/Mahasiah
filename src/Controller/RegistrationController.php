@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // encodage du mot de passe
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -51,10 +51,9 @@ class RegistrationController extends AbstractController
                 $user,
                 $request,
                 $authenticator,
-                'main' // firewall name in security.yaml
+                'main' // firewall dans le security.yaml
             );
 
-            // return $this->redirectToRoute('products_index');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -69,7 +68,7 @@ class RegistrationController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // verification par e-mail
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -78,7 +77,6 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Votre adresse e-mail a été vérifiée.');
 
         return $this->redirectToRoute('app_register');

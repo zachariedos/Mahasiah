@@ -24,27 +24,6 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('address', TextType::class)
-            ->add('postalCode', NumberType::class, [
-                'constraints' => [
-                    new Length([
-                        'min' => 5,
-                        'minMessage' => 'Un code postal comporte {{ limit }} chiffres',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 5,
-                    ]),
-                ]
-            ])
-            ->add('city', TextType::class)
-            ->add('agreeTerms', CheckboxType::class, [
-                'label'    => 'Accepter les condition d\'utilisations',
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Acceptez les conditions générales d\'utilisation.',
-                    ]),
-                ],
-            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
