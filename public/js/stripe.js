@@ -16,7 +16,7 @@
   });
   
   
-var stripe = Stripe("pk_live_51HoXvtBkzDMwRKFJbV0wLTuEC9duqtNCbUKRk17E5ev8CtVgFJ6oUTNCAq5fwXkBAfIjbERISUhA2rq5i9PXaAKC008CtoiUJr");
+var stripe = Stripe("TEST");
 
 // The items the customer wants to buy
 
